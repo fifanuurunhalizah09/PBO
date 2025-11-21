@@ -17,6 +17,7 @@ public class kategori {
         this.keterangan = keterangan;
     }
 
+    // GETTER & SETTER
     public int getIdkategori() {
         return idkategori;
     }
@@ -41,9 +42,12 @@ public class kategori {
         this.keterangan = keterangan;
     }
 
+    // GET BY ID
     public kategori getById(int id) {
         kategori kat = new kategori();
-        ResultSet rs = DBHelper.selectQuery("SELECT * FROM kategori WHERE idkategori = '" + id + "'");
+        ResultSet rs = DBHelper.selectQuery(
+                "SELECT * FROM kategori WHERE idkategori = " + id);
+
         try {
             while (rs.next()) {
                 kat = new kategori();
@@ -51,12 +55,15 @@ public class kategori {
                 kat.setNama(rs.getString("nama"));
                 kat.setKeterangan(rs.getString("keterangan"));
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
+
         return kat;
     }
 
+    // GET ALL
     public ArrayList<kategori> getAll() {
         ArrayList<kategori> ListKategori = new ArrayList<>();
         ResultSet rs = DBHelper.selectQuery("SELECT * FROM kategori");
@@ -67,22 +74,23 @@ public class kategori {
                 kat.setIdkategori(rs.getInt("idkategori"));
                 kat.setNama(rs.getString("nama"));
                 kat.setKeterangan(rs.getString("keterangan"));
-
                 ListKategori.add(kat);
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
 
         return ListKategori;
     }
 
+    // SEARCH
     public ArrayList<kategori> search(String keyword) {
         ArrayList<kategori> ListKategori = new ArrayList<>();
 
         String sql = "SELECT * FROM kategori WHERE "
-                   + " nama LIKE '%" + keyword + "%' "
-                   + " OR keterangan LIKE '%" + keyword + "%'";
+                   + "nama LIKE '%" + keyword + "%' "
+                   + "OR keterangan LIKE '%" + keyword + "%'";
 
         ResultSet rs = DBHelper.selectQuery(sql);
 
@@ -92,34 +100,42 @@ public class kategori {
                 kat.setIdkategori(rs.getInt("idkategori"));
                 kat.setNama(rs.getString("nama"));
                 kat.setKeterangan(rs.getString("keterangan"));
-
                 ListKategori.add(kat);
             }
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
 
         return ListKategori;
     }
 
+    // SAVE (INSERT & UPDATE)
     public void save() {
-        if (getById(idkategori).getIdkategori() == 0) {
+
+        // INSERT jika id = 0
+        if (this.idkategori == 0) {
             String SQL = "INSERT INTO kategori (nama, keterangan) VALUES ("
-                       + " '" + this.nama + "', "
-                       + " '" + this.keterangan + "' "
-                       + ")";
+                        + "'" + this.nama + "', "
+                        + "'" + this.keterangan + "')";
+            
             this.idkategori = DBHelper.insertQueryGetId(SQL);
-        } else {
+        } 
+        
+        // UPDATE jika id != 0
+        else {
             String SQL = "UPDATE kategori SET "
-                       + " nama = '" + this.nama + "', "
-                       + " keterangan = '" + this.keterangan + "' "
-                       + " WHERE idkategori = '" + this.idkategori + "'";
+                        + "nama = '" + this.nama + "', "
+                        + "keterangan = '" + this.keterangan + "' "
+                        + "WHERE idkategori = " + this.idkategori;
+            
             DBHelper.executeQuery(SQL);
         }
     }
 
+    // DELETE
     public void delete() {
-        String SQL = "DELETE FROM kategori WHERE idkategori = '" + this.idkategori + "'";
+        String SQL = "DELETE FROM kategori WHERE idkategori = " + this.idkategori;
         DBHelper.executeQuery(SQL);
     }
 }
