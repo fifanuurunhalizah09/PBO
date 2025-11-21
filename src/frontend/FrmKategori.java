@@ -13,10 +13,12 @@ public class FrmKategori extends JFrame {
     private JScrollPane jScrollPane1;
 
     public FrmKategori() {
-        initComponents();
-        tampilkanData();
-        kosongkanForm();
-    }
+    initComponents();
+    txtIdKategori.setEditable(false); 
+    tampilkanData();
+    kosongkanForm();
+}
+
 
     public void kosongkanForm() {
         txtIdKategori.setText("0");
